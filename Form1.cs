@@ -66,28 +66,46 @@ public partial class Form1 : Form
         gl.BlendFunc(OpenGL.GL_SRC_ALPHA, OpenGL.GL_ONE);
         gl.Disable(OpenGL.GL_DEPTH_TEST);
 
-        // Цвет свечения (мягкий жёлто-зелёный)
-        float r = 0.8f, g = 1.0f, b = 0.5f;
+        // Базовый цвет glow
+        float baseR = 0.8f, baseG = 1.0f, baseB = 0.5f;
 
-        int glowLayers = 20; // Чем больше — тем мягче
-        float maxScale = 1.4f;
-        float minScale = 1.01f;
+        int glowLayers = 60;
+
+        // Разные расширения по осям
+        float maxOffsetX = 0.5f;
+        float maxOffsetY = 0.3f;
+        float maxOffsetZ = 0.4f;
+
+        // Таймер анимации
+        float time = (float)DateTime.Now.TimeOfDay.TotalSeconds;
+        float pulsate = 1.0f + 0.05f * (float)Math.Sin(time * 2.0f); // дыхание
 
         for (int i = 0; i < glowLayers; i++)
         {
-            float t = (float)i / glowLayers;
-            float scale = minScale + (maxScale - minScale) * t;
-            float alpha = (1.0f - t) * 0.03f; // Плавное затухание альфы
+            float t = (float)i / (glowLayers - 1);
+            float spread = (float)Math.Sin(t * Math.PI / 2); // сферическое распределение
+
+            // Анизотропные размеры + дыхание
+            float sx = (1.0f + maxOffsetX * spread) * pulsate;
+            float sy = (1.0f + maxOffsetY * spread) * pulsate;
+            float sz = (1.0f + maxOffsetZ * spread) * pulsate;
+
+            // Цвет может плавно переливаться (например, G колеблется)
+            float g = baseG + 0.1f * (float)Math.Sin(time * 1.5f + t * 6.0f);
+
+            // Прозрачность убывает
+            float alpha = (1.0f - t * t) * 0.025f;
 
             gl.PushMatrix();
-            gl.Scale(scale, scale, scale);
-            gl.Color(r, g, b, alpha);
+            gl.Scale(sx, sy, sz);
+            gl.Color(baseR, g, baseB, alpha);
             DrawCubeGeometry(gl);
             gl.PopMatrix();
         }
 
         gl.PopAttrib();
     }
+
 
 
 
