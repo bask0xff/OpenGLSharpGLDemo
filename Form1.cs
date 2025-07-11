@@ -45,26 +45,39 @@ public partial class Form1 : Form
     {
         gl.Begin(OpenGL.GL_QUADS);
 
+        // Верх
+        gl.Normal(0, 1, 0);
         gl.Color(1f, 0f, 0f);
         gl.Vertex(-1, 1, -1); gl.Vertex(1, 1, -1); gl.Vertex(1, 1, 1); gl.Vertex(-1, 1, 1);
 
+        // Низ
+        gl.Normal(0, -1, 0);
         gl.Color(0f, 1f, 0f);
         gl.Vertex(-1, -1, 1); gl.Vertex(1, -1, 1); gl.Vertex(1, -1, -1); gl.Vertex(-1, -1, -1);
 
+        // Перед
+        gl.Normal(0, 0, 1);
         gl.Color(0f, 0f, 1f);
         gl.Vertex(-1, 1, 1); gl.Vertex(1, 1, 1); gl.Vertex(1, -1, 1); gl.Vertex(-1, -1, 1);
 
+        // Зад
+        gl.Normal(0, 0, -1);
         gl.Color(1f, 1f, 0f);
         gl.Vertex(-1, -1, -1); gl.Vertex(1, -1, -1); gl.Vertex(1, 1, -1); gl.Vertex(-1, 1, -1);
 
+        // Правая
+        gl.Normal(1, 0, 0);
         gl.Color(1f, 0f, 1f);
         gl.Vertex(1, 1, -1); gl.Vertex(1, 1, 1); gl.Vertex(1, -1, 1); gl.Vertex(1, -1, -1);
 
+        // Левая
+        gl.Normal(-1, 0, 0);
         gl.Color(0f, 1f, 1f);
         gl.Vertex(-1, 1, 1); gl.Vertex(-1, 1, -1); gl.Vertex(-1, -1, -1); gl.Vertex(-1, -1, 1);
 
         gl.End();
     }
+
 
 
     private void openGLControl_OpenGLInitialized(object sender, EventArgs e)
@@ -79,6 +92,26 @@ public partial class Form1 : Form
         gl.LoadIdentity();
         gl.Perspective(45.0f, (double)openGLControl.Width / openGLControl.Height, 1.0, 100.0);
         gl.MatrixMode(OpenGL.GL_MODELVIEW);
+
+        // Включаем освещение и один источник света
+        gl.Enable(OpenGL.GL_LIGHTING);
+        gl.Enable(OpenGL.GL_LIGHT0);
+
+        // Параметры света
+        float[] lightPosition = { 2.0f, 2.0f, 2.0f, 1.0f };
+        float[] lightAmbient = { 0.2f, 0.2f, 0.2f, 1.0f };
+        float[] lightDiffuse = { 0.8f, 0.8f, 0.8f, 1.0f };
+        float[] lightSpecular = { 1.0f, 1.0f, 1.0f, 1.0f };
+
+        gl.Light(OpenGL.GL_LIGHT0, OpenGL.GL_POSITION, lightPosition);
+        gl.Light(OpenGL.GL_LIGHT0, OpenGL.GL_AMBIENT, lightAmbient);
+        gl.Light(OpenGL.GL_LIGHT0, OpenGL.GL_DIFFUSE, lightDiffuse);
+        gl.Light(OpenGL.GL_LIGHT0, OpenGL.GL_SPECULAR, lightSpecular);
+
+        // Материал (по умолчанию — можно не указывать)
+        gl.Enable(OpenGL.GL_COLOR_MATERIAL);
+        gl.ShadeModel(OpenGL.GL_SMOOTH);
+
     }
 
     private void openGLControl_Resized(object sender, EventArgs e)
