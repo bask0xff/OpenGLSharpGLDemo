@@ -50,6 +50,11 @@ partial class Form1
         this.openGLControl.OpenGLInitialized += new System.EventHandler(this.openGLControl_OpenGLInitialized);
         this.openGLControl.Resized += new System.EventHandler(this.openGLControl_Resized);
 
+        this.openGLControl.MouseDown += openGLControl_MouseDown;
+        this.openGLControl.MouseUp += openGLControl_MouseUp;
+        this.openGLControl.MouseMove += openGLControl_MouseMove;
+        this.openGLControl.MouseWheel += openGLControl_MouseWheel;
+
         // 
         // Form1
         // 

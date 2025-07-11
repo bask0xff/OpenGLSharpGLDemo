@@ -7,6 +7,12 @@ namespace OpenGLSharpGLDemo;
 public partial class Form1 : Form
 {
     private float rotation = 0.0f;
+    private float rotationX = 20f;
+    private float rotationY = 30f;
+    private float zoom = -6.0f;
+
+    private Point lastMousePos;
+    private bool isDragging = false;
 
     public Form1()
     {
@@ -28,21 +34,36 @@ public partial class Form1 : Form
 
         gl.Clear(OpenGL.GL_COLOR_BUFFER_BIT | OpenGL.GL_DEPTH_BUFFER_BIT);
         gl.LoadIdentity();
-        gl.Translate(0.0f, 0.0f, -6.0f);
+        gl.Translate(0.0f, 0.0f, zoom);
+        gl.Rotate(rotationX, 1.0f, 0.0f, 0.0f);
+        gl.Rotate(rotationY, 0.0f, 1.0f, 0.0f);
 
-        gl.Begin(OpenGL.GL_TRIANGLES);
+        DrawCube(gl); // Вынеси отрисовку куба в отдельный метод
+    }
 
-        gl.Color(1.0f, 0.0f, 0.0f);
-        gl.Vertex(0.0f, 1.0f, 0.0f);
+    private void DrawCube(OpenGL gl)
+    {
+        gl.Begin(OpenGL.GL_QUADS);
 
-        gl.Color(0.0f, 1.0f, 0.0f);
-        gl.Vertex(-1.0f, -1.0f, 0.0f);
+        gl.Color(1f, 0f, 0f);
+        gl.Vertex(-1, 1, -1); gl.Vertex(1, 1, -1); gl.Vertex(1, 1, 1); gl.Vertex(-1, 1, 1);
 
-        gl.Color(0.0f, 0.0f, 1.0f);
-        gl.Vertex(1.0f, -1.0f, 0.0f);
+        gl.Color(0f, 1f, 0f);
+        gl.Vertex(-1, -1, 1); gl.Vertex(1, -1, 1); gl.Vertex(1, -1, -1); gl.Vertex(-1, -1, -1);
+
+        gl.Color(0f, 0f, 1f);
+        gl.Vertex(-1, 1, 1); gl.Vertex(1, 1, 1); gl.Vertex(1, -1, 1); gl.Vertex(-1, -1, 1);
+
+        gl.Color(1f, 1f, 0f);
+        gl.Vertex(-1, -1, -1); gl.Vertex(1, -1, -1); gl.Vertex(1, 1, -1); gl.Vertex(-1, 1, -1);
+
+        gl.Color(1f, 0f, 1f);
+        gl.Vertex(1, 1, -1); gl.Vertex(1, 1, 1); gl.Vertex(1, -1, 1); gl.Vertex(1, -1, -1);
+
+        gl.Color(0f, 1f, 1f);
+        gl.Vertex(-1, 1, 1); gl.Vertex(-1, 1, -1); gl.Vertex(-1, -1, -1); gl.Vertex(-1, -1, 1);
 
         gl.End();
-        gl.Flush();
     }
 
 
@@ -69,6 +90,40 @@ public partial class Form1 : Form
         gl.LoadIdentity();
         gl.Perspective(45.0f, (double)openGLControl.Width / openGLControl.Height, 1.0, 100.0);
         gl.MatrixMode(OpenGL.GL_MODELVIEW);
+    }
+
+    private void openGLControl_MouseDown(object sender, MouseEventArgs e)
+    {
+        if (e.Button == MouseButtons.Left)
+        {
+            isDragging = true;
+            lastMousePos = e.Location;
+        }
+    }
+
+    private void openGLControl_MouseUp(object sender, MouseEventArgs e)
+    {
+        if (e.Button == MouseButtons.Left)
+            isDragging = false;
+    }
+
+    private void openGLControl_MouseMove(object sender, MouseEventArgs e)
+    {
+        if (isDragging)
+        {
+            var dx = e.X - lastMousePos.X;
+            var dy = e.Y - lastMousePos.Y;
+
+            rotationY += dx * 0.5f;
+            rotationX += dy * 0.5f;
+
+            lastMousePos = e.Location;
+        }
+    }
+
+    private void openGLControl_MouseWheel(object sender, MouseEventArgs e)
+    {
+        zoom += e.Delta > 0 ? 0.5f : -0.5f;
     }
 
 }
