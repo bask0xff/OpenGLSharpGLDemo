@@ -42,17 +42,60 @@ public partial class Form1 : Form
         float[] lightPos = { 4f, 4f, 4f, 1f };
         gl.Light(OpenGL.GL_LIGHT0, OpenGL.GL_POSITION, lightPos);
 
-        // Выставим очень яркий ambient свет
         float[] ambient = { 0.7f, 0.7f, 0.7f, 1.0f };
         gl.Light(OpenGL.GL_LIGHT0, OpenGL.GL_AMBIENT, ambient);
 
-        // Материал
         float[] diffuse = { 0.6f, 0.6f, 0.6f, 1.0f };
         gl.Material(OpenGL.GL_FRONT_AND_BACK, OpenGL.GL_AMBIENT_AND_DIFFUSE, diffuse);
 
-        DrawCube(gl);
-        gl.Flush();
+        // === Glow pass ===
+        DrawGlowCube(gl);
 
+        // === Main cube pass ===
+        DrawCube(gl);
+
+        gl.Flush();
+    }
+
+    private void DrawGlowCube(OpenGL gl)
+    {
+        gl.PushAttrib(OpenGL.GL_ENABLE_BIT | OpenGL.GL_COLOR_BUFFER_BIT);
+
+        gl.Disable(OpenGL.GL_LIGHTING);
+        gl.Enable(OpenGL.GL_BLEND);
+        gl.BlendFunc(OpenGL.GL_SRC_ALPHA, OpenGL.GL_ONE); // Additive blending
+        gl.Disable(OpenGL.GL_DEPTH_TEST);
+
+        gl.Color(1f, 1f, 0f, 0.2f); // Yellowish soft glow with alpha
+
+        gl.PushMatrix();
+        gl.Scale(1.2f, 1.2f, 1.2f); // Slightly larger than main cube
+        gl.Begin(OpenGL.GL_QUADS);
+
+        // Все стороны куба
+        // Верх
+        gl.Normal(0, 1, 0);
+        gl.Vertex(-1, 1, -1); gl.Vertex(1, 1, -1); gl.Vertex(1, 1, 1); gl.Vertex(-1, 1, 1);
+        // Низ
+        gl.Normal(0, -1, 0);
+        gl.Vertex(-1, -1, 1); gl.Vertex(1, -1, 1); gl.Vertex(1, -1, -1); gl.Vertex(-1, -1, -1);
+        // Перед
+        gl.Normal(0, 0, 1);
+        gl.Vertex(-1, 1, 1); gl.Vertex(1, 1, 1); gl.Vertex(1, -1, 1); gl.Vertex(-1, -1, 1);
+        // Зад
+        gl.Normal(0, 0, -1);
+        gl.Vertex(-1, -1, -1); gl.Vertex(1, -1, -1); gl.Vertex(1, 1, -1); gl.Vertex(-1, 1, -1);
+        // Правая
+        gl.Normal(1, 0, 0);
+        gl.Vertex(1, 1, -1); gl.Vertex(1, 1, 1); gl.Vertex(1, -1, 1); gl.Vertex(1, -1, -1);
+        // Левая
+        gl.Normal(-1, 0, 0);
+        gl.Vertex(-1, 1, 1); gl.Vertex(-1, 1, -1); gl.Vertex(-1, -1, -1); gl.Vertex(-1, -1, 1);
+
+        gl.End();
+        gl.PopMatrix();
+
+        gl.PopAttrib();
     }
 
 
@@ -171,5 +214,7 @@ public partial class Form1 : Form
     {
         zoom += e.Delta > 0 ? 0.5f : -0.5f;
     }
+
+
 
 }
