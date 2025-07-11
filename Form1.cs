@@ -66,24 +66,29 @@ public partial class Form1 : Form
         gl.BlendFunc(OpenGL.GL_SRC_ALPHA, OpenGL.GL_ONE);
         gl.Disable(OpenGL.GL_DEPTH_TEST);
 
-        // Цвет свечения: мягкий желтовато-зелёный
-        gl.Color(0.8f, 1f, 0.5f, 0.05f);
+        // Цвет свечения (мягкий жёлто-зелёный)
+        float r = 0.8f, g = 1.0f, b = 0.5f;
 
-        // Нарисуем несколько «слоёв» свечения
-        for (int i = 1; i <= 5; i++)
+        int glowLayers = 20; // Чем больше — тем мягче
+        float maxScale = 1.4f;
+        float minScale = 1.01f;
+
+        for (int i = 0; i < glowLayers; i++)
         {
-            float scale = 1.0f + i * 0.05f;
-            float alpha = 0.05f / i; // Чем дальше слой — тем слабее альфа
+            float t = (float)i / glowLayers;
+            float scale = minScale + (maxScale - minScale) * t;
+            float alpha = (1.0f - t) * 0.03f; // Плавное затухание альфы
 
             gl.PushMatrix();
             gl.Scale(scale, scale, scale);
-            gl.Color(0.8f, 1f, 0.5f, alpha);
-            DrawCubeGeometry(gl);  // только геометрию без материала и цвета
+            gl.Color(r, g, b, alpha);
+            DrawCubeGeometry(gl);
             gl.PopMatrix();
         }
 
         gl.PopAttrib();
     }
+
 
 
     private void DrawCubeGeometry(OpenGL gl)
@@ -160,6 +165,12 @@ public partial class Form1 : Form
         // Освещение
         gl.Enable(OpenGL.GL_LIGHTING);
         gl.Enable(OpenGL.GL_LIGHT0);
+
+        gl.Enable(OpenGL.GL_BLEND);
+        gl.Hint(OpenGL.GL_LINE_SMOOTH_HINT, OpenGL.GL_NICEST);
+        gl.Enable(OpenGL.GL_LINE_SMOOTH);
+        gl.Enable(OpenGL.GL_POLYGON_SMOOTH);
+        gl.Hint(OpenGL.GL_POLYGON_SMOOTH_HINT, OpenGL.GL_NICEST);
 
         float[] lightAmbient = { 0.1f, 0.1f, 0.1f, 1.0f };
         float[] lightDiffuse = { 0.9f, 0.9f, 0.9f, 1.0f };
