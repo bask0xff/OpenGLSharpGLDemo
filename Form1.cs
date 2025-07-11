@@ -34,15 +34,34 @@ public partial class Form1 : Form
 
         gl.Clear(OpenGL.GL_COLOR_BUFFER_BIT | OpenGL.GL_DEPTH_BUFFER_BIT);
         gl.LoadIdentity();
-        gl.Translate(0.0f, 0.0f, zoom);
-        gl.Rotate(rotationX, 1.0f, 0.0f, 0.0f);
-        gl.Rotate(rotationY, 0.0f, 1.0f, 0.0f);
 
-        DrawCube(gl); // Вынеси отрисовку куба в отдельный метод
+        gl.Translate(0, 0, zoom);
+        gl.Rotate(rotationX, 1, 0, 0);
+        gl.Rotate(rotationY, 0, 1, 0);
+
+        float[] lightPos = { 4f, 4f, 4f, 1f };
+        gl.Light(OpenGL.GL_LIGHT0, OpenGL.GL_POSITION, lightPos);
+
+        // Выставим очень яркий ambient свет
+        float[] ambient = { 0.7f, 0.7f, 0.7f, 1.0f };
+        gl.Light(OpenGL.GL_LIGHT0, OpenGL.GL_AMBIENT, ambient);
+
+        // Материал
+        float[] diffuse = { 0.6f, 0.6f, 0.6f, 1.0f };
+        gl.Material(OpenGL.GL_FRONT_AND_BACK, OpenGL.GL_AMBIENT_AND_DIFFUSE, diffuse);
+
+        DrawCube(gl);
+        gl.Flush();
+
     }
+
 
     private void DrawCube(OpenGL gl)
     {
+        float[] specular = { 1.0f, 1.0f, 1.0f, 1.0f };
+        gl.Material(OpenGL.GL_FRONT, OpenGL.GL_SPECULAR, specular);
+        gl.Material(OpenGL.GL_FRONT, OpenGL.GL_SHININESS, 128.0f); // максимум блеска
+
         gl.Begin(OpenGL.GL_QUADS);
 
         // Верх
@@ -87,32 +106,26 @@ public partial class Form1 : Form
         gl.ClearColor(0f, 0f, 0f, 1f);
         gl.Enable(OpenGL.GL_DEPTH_TEST);
 
-        // Настройка перспективной проекции
-        gl.MatrixMode(OpenGL.GL_PROJECTION);
-        gl.LoadIdentity();
-        gl.Perspective(45.0f, (double)openGLControl.Width / openGLControl.Height, 1.0, 100.0);
-        gl.MatrixMode(OpenGL.GL_MODELVIEW);
-
-        // Включаем освещение и один источник света
+        // Освещение
         gl.Enable(OpenGL.GL_LIGHTING);
         gl.Enable(OpenGL.GL_LIGHT0);
 
-        // Параметры света
-        float[] lightPosition = { 2.0f, 2.0f, 2.0f, 1.0f };
-        float[] lightAmbient = { 0.2f, 0.2f, 0.2f, 1.0f };
-        float[] lightDiffuse = { 0.8f, 0.8f, 0.8f, 1.0f };
+        float[] lightAmbient = { 0.1f, 0.1f, 0.1f, 1.0f };
+        float[] lightDiffuse = { 0.9f, 0.9f, 0.9f, 1.0f };
         float[] lightSpecular = { 1.0f, 1.0f, 1.0f, 1.0f };
+        float[] lightPosition = { 4.0f, 4.0f, 4.0f, 1.0f }; // Точка в 3D-пространстве
 
-        gl.Light(OpenGL.GL_LIGHT0, OpenGL.GL_POSITION, lightPosition);
         gl.Light(OpenGL.GL_LIGHT0, OpenGL.GL_AMBIENT, lightAmbient);
         gl.Light(OpenGL.GL_LIGHT0, OpenGL.GL_DIFFUSE, lightDiffuse);
         gl.Light(OpenGL.GL_LIGHT0, OpenGL.GL_SPECULAR, lightSpecular);
+        gl.Light(OpenGL.GL_LIGHT0, OpenGL.GL_POSITION, lightPosition);
 
-        // Материал (по умолчанию — можно не указывать)
+        // Материал
         gl.Enable(OpenGL.GL_COLOR_MATERIAL);
+        gl.ColorMaterial(OpenGL.GL_FRONT, OpenGL.GL_AMBIENT_AND_DIFFUSE);
         gl.ShadeModel(OpenGL.GL_SMOOTH);
-
     }
+
 
     private void openGLControl_Resized(object sender, EventArgs e)
     {
