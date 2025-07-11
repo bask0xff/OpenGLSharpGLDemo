@@ -69,17 +69,21 @@ public partial class Form1 : Form
         float r = 0.8f, g = 1.0f, b = 0.5f;
 
         int glowLayers = 60;
-        float minScale = 1.0f;
-        float maxScale = 1.4f;
+        float maxOffset = 0.4f; // максимальное добавочное расширение
 
         for (int i = 0; i < glowLayers; i++)
         {
-            float t = (float)i / (glowLayers - 1); // от 0 до 1
-            float scale = minScale + (maxScale - minScale) * (t * t); // сферическая зависимость
-            float alpha = (1.0f - t * t) * 0.03f; // быстрее спадающая прозрачность
+            float t = (float)i / (glowLayers - 1);  // от 0 до 1
+            float spread = (float)Math.Sin(t * Math.PI / 2); // более сферическая кривая
+
+            float sx = 1.0f + maxOffset * spread;
+            float sy = 1.0f + maxOffset * spread;
+            float sz = 1.0f + maxOffset * spread;
+
+            float alpha = (1.0f - t * t) * 0.03f;
 
             gl.PushMatrix();
-            gl.Scale(scale, scale, scale);
+            gl.Scale(sx, sy, sz);
             gl.Color(r, g, b, alpha);
             DrawCubeGeometry(gl);
             gl.PopMatrix();
@@ -87,6 +91,7 @@ public partial class Form1 : Form
 
         gl.PopAttrib();
     }
+
 
     private void DrawCubeGeometry(OpenGL gl)
     {
