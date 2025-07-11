@@ -66,18 +66,17 @@ public partial class Form1 : Form
         gl.BlendFunc(OpenGL.GL_SRC_ALPHA, OpenGL.GL_ONE);
         gl.Disable(OpenGL.GL_DEPTH_TEST);
 
-        // Цвет свечения (мягкий жёлто-зелёный)
         float r = 0.8f, g = 1.0f, b = 0.5f;
 
-        int glowLayers = 20; // Чем больше — тем мягче
+        int glowLayers = 60;
+        float minScale = 1.0f;
         float maxScale = 1.4f;
-        float minScale = 1.01f;
 
         for (int i = 0; i < glowLayers; i++)
         {
-            float t = (float)i / glowLayers;
-            float scale = minScale + (maxScale - minScale) * t;
-            float alpha = (1.0f - t) * 0.03f; // Плавное затухание альфы
+            float t = (float)i / (glowLayers - 1); // от 0 до 1
+            float scale = minScale + (maxScale - minScale) * (t * t); // сферическая зависимость
+            float alpha = (1.0f - t * t) * 0.03f; // быстрее спадающая прозрачность
 
             gl.PushMatrix();
             gl.Scale(scale, scale, scale);
@@ -88,8 +87,6 @@ public partial class Form1 : Form
 
         gl.PopAttrib();
     }
-
-
 
     private void DrawCubeGeometry(OpenGL gl)
     {
@@ -110,6 +107,7 @@ public partial class Form1 : Form
 
         gl.End();
     }
+
 
 
     private void DrawCube(OpenGL gl)
