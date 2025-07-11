@@ -63,39 +63,47 @@ public partial class Form1 : Form
 
         gl.Disable(OpenGL.GL_LIGHTING);
         gl.Enable(OpenGL.GL_BLEND);
-        gl.BlendFunc(OpenGL.GL_SRC_ALPHA, OpenGL.GL_ONE); // Additive blending
+        gl.BlendFunc(OpenGL.GL_SRC_ALPHA, OpenGL.GL_ONE);
         gl.Disable(OpenGL.GL_DEPTH_TEST);
 
-        gl.Color(1f, 1f, 0f, 0.2f); // Yellowish soft glow with alpha
+        // Цвет свечения: мягкий желтовато-зелёный
+        gl.Color(0.8f, 1f, 0.5f, 0.05f);
 
-        gl.PushMatrix();
-        gl.Scale(1.2f, 1.2f, 1.2f); // Slightly larger than main cube
+        // Нарисуем несколько «слоёв» свечения
+        for (int i = 1; i <= 5; i++)
+        {
+            float scale = 1.0f + i * 0.05f;
+            float alpha = 0.05f / i; // Чем дальше слой — тем слабее альфа
+
+            gl.PushMatrix();
+            gl.Scale(scale, scale, scale);
+            gl.Color(0.8f, 1f, 0.5f, alpha);
+            DrawCubeGeometry(gl);  // только геометрию без материала и цвета
+            gl.PopMatrix();
+        }
+
+        gl.PopAttrib();
+    }
+
+
+    private void DrawCubeGeometry(OpenGL gl)
+    {
         gl.Begin(OpenGL.GL_QUADS);
 
-        // Все стороны куба
         // Верх
-        gl.Normal(0, 1, 0);
         gl.Vertex(-1, 1, -1); gl.Vertex(1, 1, -1); gl.Vertex(1, 1, 1); gl.Vertex(-1, 1, 1);
         // Низ
-        gl.Normal(0, -1, 0);
         gl.Vertex(-1, -1, 1); gl.Vertex(1, -1, 1); gl.Vertex(1, -1, -1); gl.Vertex(-1, -1, -1);
         // Перед
-        gl.Normal(0, 0, 1);
         gl.Vertex(-1, 1, 1); gl.Vertex(1, 1, 1); gl.Vertex(1, -1, 1); gl.Vertex(-1, -1, 1);
         // Зад
-        gl.Normal(0, 0, -1);
         gl.Vertex(-1, -1, -1); gl.Vertex(1, -1, -1); gl.Vertex(1, 1, -1); gl.Vertex(-1, 1, -1);
         // Правая
-        gl.Normal(1, 0, 0);
         gl.Vertex(1, 1, -1); gl.Vertex(1, 1, 1); gl.Vertex(1, -1, 1); gl.Vertex(1, -1, -1);
         // Левая
-        gl.Normal(-1, 0, 0);
         gl.Vertex(-1, 1, 1); gl.Vertex(-1, 1, -1); gl.Vertex(-1, -1, -1); gl.Vertex(-1, -1, 1);
 
         gl.End();
-        gl.PopMatrix();
-
-        gl.PopAttrib();
     }
 
 
