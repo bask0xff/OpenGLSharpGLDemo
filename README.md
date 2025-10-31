@@ -152,16 +152,3 @@ This project is licensed under the MIT License – see LICENSE for details.
 - OpenGL community & contributors
 
 Happy rendering!
-
----
-
-### Instructions to Use This File
-
-1. Copy **all the text above** (starting from `# OpenGL SharpGL Demo`).
-2. In your GitHub repo, create a file named:  
-   `README.md` (case-sensitive)
-3. Paste the content.
-4. Create a `screenshots/` folder and add a `demo.gif` or `demo.png`.
-5. Commit and push!
-
-Let me know when the repo is fully accessible — I’ll **analyze the real code** and update this README with **exact file names, features, and code snippets** from your project.
