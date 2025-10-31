@@ -54,12 +54,11 @@ dotnet run
 | Or open OpenGLSharpGLDemo.sln in Visual Studio and press F5.
 
 ## Controls
-```
-Action: Input
-Rotate View: Left Mouse Drag
-Zoom: Mouse Wheel
-Reset Camera: Press R
-```
+| Action         | Input            |
+|----------------|------------------|
+| Rotate View    | Left Mouse Drag  |
+| Zoom           | Mouse Wheel      |
+| Reset Camera   | Press **R**      |
 ## Project Structure
 ```
 OpenGLSharpGLDemo/
