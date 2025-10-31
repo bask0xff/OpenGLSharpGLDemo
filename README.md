@@ -136,12 +136,6 @@ private void OpenGLControl_OpenGLDraw(object sender, OpenGLEventArgs args)
 | Mouse input not working      | Ensure `openGLControl` has focus (`Focusable="True"`)                    |
 | Build errors                 | Run `dotnet clean && dotnet restore`                                     |
 
-## Contributing
-1. Fork the repo
-2. Create a branch: git checkout -b feature/cool-shader
-3. Commit: git commit -m "Add normal mapping"
-4. Push and open a Pull Request
-
 ## License
 This project is licensed under the MIT License – see LICENSE for details.
 
