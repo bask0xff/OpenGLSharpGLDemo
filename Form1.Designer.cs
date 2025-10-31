@@ -32,32 +32,41 @@ partial class Form1
     /// </summary>
     private void InitializeComponent()
     {
-        this.components = new System.ComponentModel.Container();
-        this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-        this.ClientSize = new System.Drawing.Size(800, 450);
-
         this.openGLControl = new SharpGL.OpenGLControl();
         ((System.ComponentModel.ISupportInitialize)(this.openGLControl)).BeginInit();
         this.SuspendLayout();
 
+        // 
         // openGLControl
+        // 
         this.openGLControl.Dock = System.Windows.Forms.DockStyle.Fill;
         this.openGLControl.DrawFPS = false;
         this.openGLControl.OpenGLVersion = SharpGL.Version.OpenGLVersion.OpenGL2_1;
-        this.openGLControl.RenderContextType = SharpGL.RenderContextType.FBO;
-        this.openGLControl.RenderTrigger = SharpGL.RenderTrigger.TimerBased;
+        this.openGLControl.RenderContextType = SharpGL.RenderContextType.NativeWindow;
+        this.openGLControl.RenderTrigger = SharpGL.RenderTrigger.Manual;
         this.openGLControl.Size = new System.Drawing.Size(800, 600);
         this.openGLControl.TabIndex = 0;
         this.openGLControl.OpenGLDraw += new SharpGL.RenderEventHandler(this.openGLControl_OpenGLDraw);
         this.openGLControl.OpenGLInitialized += new System.EventHandler(this.openGLControl_OpenGLInitialized);
+        this.openGLControl.Resized += new System.EventHandler(this.openGLControl_Resized);
 
+        this.openGLControl.MouseDown += openGLControl_MouseDown;
+        this.openGLControl.MouseUp += openGLControl_MouseUp;
+        this.openGLControl.MouseMove += openGLControl_MouseMove;
+        this.openGLControl.MouseWheel += openGLControl_MouseWheel;
+
+        // 
         // Form1
+        // 
         this.ClientSize = new System.Drawing.Size(800, 600);
         this.Controls.Add(this.openGLControl);
-
-
-        this.Text = "Form1";
+        this.Name = "Form1";
+        this.Text = "OpenGL Demo";
+        this.Load += new System.EventHandler(this.Form1_Load);
+        ((System.ComponentModel.ISupportInitialize)(this.openGLControl)).EndInit();
+        this.ResumeLayout(false);
     }
+
 
     #endregion
 }
