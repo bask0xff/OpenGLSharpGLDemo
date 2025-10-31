@@ -21,10 +21,8 @@ Ideal for learning modern OpenGL in C# with SharpGL.
 
 ---
 
-## Screenshot
-
-![Demo](screenshots/demo.gif)  
-*(Add a GIF or PNG of your running app in `/screenshots/`)*
+## Video demo
+https://github.com/user-attachments/assets/cd85ad88-8467-4537-b7f6-d500b009a44e
 
 ---
 
