@@ -73,7 +73,7 @@ OpenGLSharpGLDemo/
 │   └── fragment.glsl
 ├── Utils/
 │   └── GLHelper.cs              # Shader loading, error checks
-└── screenshots/                 # Add demo images here
+└── screenshots/                 # demo images here
 ```
 ## Key Code Snippets
 ### Vertex Shader (Shaders/vertex.glsl)
