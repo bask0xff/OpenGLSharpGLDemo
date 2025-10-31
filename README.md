@@ -117,24 +117,26 @@ private void OpenGLControl_OpenGLDraw(object sender, OpenGLEventArgs args)
 }
 ```
 ## Dependencies
-```
-Package,Purpose,Install Command
-SharpGL,OpenGL bindings,dotnet add package SharpGL --version 2.4.3
-SharpGL.WPF,WPF OpenGL control,dotnet add package SharpGL.WPF --version 2.4.3
-```
+
+| Package       | Purpose               | Install Command                                      |
+|---------------|-----------------------|------------------------------------------------------|
+| SharpGL       | OpenGL bindings       | `dotnet add package SharpGL --version 2.4.3`         |
+| SharpGL.WPF   | WPF OpenGL control    | `dotnet add package SharpGL.WPF --version 2.4.3`     |
+
 ## Extending the Project
 - Add Textures: Load images with System.Drawing or ImageSharp, upload to GPU.
 - Lighting: Add normals + Phong shader.
 - Load Models: Use AssimpNet to import .obj.
 - Instancing: Render 1000+ cubes efficiently.
+
 ## Troubleshooting
-```
-Issue,Solution
-Black screen: Update GPU drivers; check OpenGL version via gl.GetString(GL_VERSION)
-Shader fails to compile: Check console logs; fix GLSL syntax
-Mouse input not working: Ensure openGLControl has focus (Focusable=""True"")
-Build errors: Run dotnet clean && dotnet restore
-```
+| Issue                        | Solution                                                                 |
+|------------------------------|--------------------------------------------------------------------------|
+| Black screen                 | Update GPU drivers; check OpenGL version via `gl.GetString(GL_VERSION)`  |
+| Shader fails to compile      | Check console logs; fix GLSL syntax                                      |
+| Mouse input not working      | Ensure `openGLControl` has focus (`Focusable="True"`)                    |
+| Build errors                 | Run `dotnet clean && dotnet restore`                                     |
+
 ## Contributing
 1. Fork the repo
 2. Create a branch: git checkout -b feature/cool-shader
