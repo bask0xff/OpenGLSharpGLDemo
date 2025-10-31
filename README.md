@@ -22,7 +22,7 @@ Ideal for learning modern OpenGL in C# with SharpGL.
 ---
 
 ## Video demo
-https://github.com/user-attachments/assets/cd85ad88-8467-4537-b7f6-d500b009a44e
+https://github.com/user-attachments/assets/35315e4f-b117-413a-9ee8-7f3063d1cbba
 
 ---
 
