@@ -68,10 +68,10 @@ public partial class Form1 : Form
 
         float baseR = 0.8f, baseG = 1.0f, baseB = 0.5f;
 
-        int glowLayers = 60;
-        float maxOffsetX = 0.4f;
-        float maxOffsetY = 0.25f;
-        float maxOffsetZ = 0.3f;
+        int glowLayers = 32;
+        float maxOffsetX = 0.04f;
+        float maxOffsetY = 0.025f;
+        float maxOffsetZ = 0.03f;
 
         float time = (float)DateTime.Now.TimeOfDay.TotalSeconds;
         float pulsate = 1.0f + 0.03f * (float)Math.Sin(time * 2.0f); // мягче дыхание
